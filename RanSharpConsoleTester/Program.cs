@@ -5,13 +5,13 @@ using RanSharp.Performance;
 using RanSharp.Maths;
 using Benchmarking;
 
-BenchmarkType btype = BenchmarkType.LoopSpeedTest;
+BenchmarkType btype = BenchmarkType.None;
 switch (btype)
 {
     case BenchmarkType.None:
         ArrVector<double> vec1 = new(10, i => i);
         NumericLoop<double>.CompositeInPlace(vec1, vec1, (a, b) => a * b);
-        Console.WriteLine(vec1.ToString());
+        Console.WriteLine(vec1);
         List<double> lst1 = new();
         Loop.Do(10, i => lst1.Add(i));
         Loop<double>.CompositeInPlace(lst1, lst1, (a, b) => a * b);
