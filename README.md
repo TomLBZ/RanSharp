@@ -31,11 +31,11 @@ ArrVector<double> c = new(1e6, i => Math.Sqrt(i));
 
 // Arithmetics --------------------------------------
 var sin_c = c.Map(Math.Sin); // Apply the sine function to each element and store the result in a new ArrVector<double>
-Func<double, double, double> f = (a,b) => {//YOUR_CALCULATIONS}; // Create a function that does something
+Func<double, double, double> f = (a,b) => {/*YOUR_CALCULATIONS*/}; // Create a function that does something
 c.CompositeInPlace(sin_c, f); // Mutate c by applying the function to each element of c and sin_c
-c.CompositeInPlace(sin_c, (a,b) => {//YOUR_CALCULATIONS}); // Same effect, but using a lambda expression
-var d = c * c / 2; // Element-wise arithmetic operators are supported.
-var e = c & c; // Dot product. (Cross product is c % c, angle between vectors is c ^ c)
+c.CompositeInPlace(sin_c, (a,b) => {/*YOUR_CALCULATIONS*/}); // Same effect, but using a lambda expression
+var d = (c + 1) / 2; // Element-wise arithmetic operators are supported.
+var e = c * c; // Dot product. (Cross product is c % c, angle between vectors is c / c)
 
 // Using the Loop class and Loop<T>, NumericLoop<T> classes ===================
 int size = 1e6;
