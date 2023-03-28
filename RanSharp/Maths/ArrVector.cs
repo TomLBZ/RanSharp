@@ -8,8 +8,8 @@ namespace RanSharp.Maths
     /// Array vector struct with special reloaded operators and optimized loop speeds.
     /// <br/>Absolute value (Abs(a)) =========== +a
     /// <br/>Normalized value (a.Normalized()): === ~a
-    /// <br/>Dot product (a·b) =============== a <![CDATA[&]]> b
-    /// <br/>Angle between (a·b/(|a||b|)) ======== a ^ b
+    /// <br/>Dot product (a·b) =============== a * b
+    /// <br/>Angle between ((a·b)/(|a|*|b|)) ======== a / b
     /// <br/>Cross product (a X b) ============ a % b
     /// <br/>Optimized Loop: ForEach, Accumulate, MapBy, CombineWith, CompositeWith
     /// </summary>
@@ -110,7 +110,7 @@ namespace RanSharp.Maths
         public T Min() => Accumulate(ArrVector<T>.maxValue, (acc, x) => x < acc ? x : acc);
         public T Sum() => Accumulate(T.Zero, (acc, x) => acc + x);
         public T Mag2() => Accumulate(T.Zero, (acc, x) => acc + x * x);
-        public T Mag() => NumericLoop<T>.Calc1(Mag2(), Math.Sqrt);
+        public T Mag() => Calc<T>.Calc1(Mag2(), Math.Sqrt);
         public ArrVector<T> Normalized() => this / Mag();
         public ArrVector<T> Abs() => Map(x => x < T.Zero ? -x : x);
         public ArrVector<T> Composite(ArrVector<T> other, Func<T, T, T> func) => NumericLoop<T>.Composite(this, other, func);
@@ -163,28 +163,26 @@ namespace RanSharp.Maths
         public static ArrVector<T> operator -(ArrVector<T> a, ArrVector<T> b) => a.Composite(b, (a, b) => a - b);
         public static ArrVector<T> operator -(ArrVector<T> a, T b) => a.Combine(b, (a, b) => a - b);
         public static ArrVector<T> operator -(T a, ArrVector<T> b) => b.Combine(a, (a, b) => a - b);
-        public static ArrVector<T> operator *(ArrVector<T> a, ArrVector<T> b) => a.Composite(b, (a, b) => a * b);
         public static ArrVector<T> operator *(ArrVector<T> a, T b) => a.Combine(b, (a, b) => a * b);
         public static ArrVector<T> operator *(T a, ArrVector<T> b) => b.Combine(a, (a, b) => a * b);
-        public static ArrVector<T> operator /(ArrVector<T> a, ArrVector<T> b) => a.Composite(b, (a, b) => a / b);
         public static ArrVector<T> operator /(ArrVector<T> a, T b) => a.Combine(b, (a, b) => a / b);
         public static ArrVector<T> operator /(T a, ArrVector<T> b) => b.Combine(a, (a, b) => a / b);
+        public static ArrVector<T> operator ^(ArrVector<T> a, T b) => a.Combine(b, (a, b) => Calc<T>.Calc2(a, b, Math.Pow));
+        public static ArrVector<T> operator ^(T a, ArrVector<T> b) => b.Combine(a, (a, b) => Calc<T>.Calc2(a, b, Math.Pow));
         /// <summary>
         /// Dot product of a and b
         /// </summary>
         /// <param name="a">ArrVector a</param>
         /// <param name="b">ArrVector b</param>
         /// <returns>The dot product a·b of type T</returns>
-        public static T operator &(ArrVector<T> a, ArrVector<T> b) => (a * b).Sum();
+        public static T operator *(ArrVector<T> a, ArrVector<T> b) => a.Composite(b, (a, b) => a * b).Sum();
         /// <summary>
         /// The angle between a and b
         /// </summary>
         /// <param name="a">ArrVector a</param>
         /// <param name="b">ArrVector b</param>
-        /// <returns>a·b/(|a||b|)</returns>
-        public static T operator ^(ArrVector<T> a, ArrVector<T> b) => NumericLoop<T>.Calc1(a & b / (a.Mag() * b.Mag()), Math.Acos);
-        public static ArrVector<T> operator ^(ArrVector<T> a, T b) => a.Combine(b, (a, b) => NumericLoop<T>.Calc2(a, b, Math.Pow));
-        public static ArrVector<T> operator ^(T a, ArrVector<T> b) => b.Combine(a, (a, b) => NumericLoop<T>.Calc2(a, b, Math.Pow));
+        /// <returns>(a·b)/(|a||b|)</returns>
+        public static T operator /(ArrVector<T> a, ArrVector<T> b) => Calc<T>.Calc1(a * b / (a.Mag() * b.Mag()), Math.Acos);
         /// <summary>
         /// Cross product of a and b
         /// </summary>

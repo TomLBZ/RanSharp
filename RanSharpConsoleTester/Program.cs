@@ -9,13 +9,35 @@ BenchmarkType btype = BenchmarkType.None;
 switch (btype)
 {
     case BenchmarkType.None:
-        ArrVector<double> vec1 = new(10, i => i);
-        NumericLoop<double>.CompositeInPlace(vec1, vec1, (a, b) => a * b);
-        Console.WriteLine(vec1);
-        List<double> lst1 = new();
-        Loop.Do(10, i => lst1.Add(i));
-        Loop<double>.CompositeInPlace(lst1, lst1, (a, b) => a * b);
-        Console.WriteLine(string.Join(',', lst1));
+        double epsilon = 1e-10;
+        Console.WriteLine($"Epsilon = {epsilon}");
+        Mat3<double> mzero = new();
+        Console.WriteLine("Matrix 0 = " + mzero);
+        Mat3<double> mone = Mat3<double>.Ones();
+        Console.WriteLine("Matrix 1 = " + mone);
+        Mat3<double> mi = Mat3<double>.I();
+        Console.WriteLine("Matrix I = " + mi);
+        Mat3<double> m = new(2, 4, 1, 3, 5, 6, 5, 7, 8);
+        Console.WriteLine("Matrix m = " + m);
+        var invm = m.Inv();
+        Console.WriteLine("m.Inv() = " + invm);
+        var product = m * invm;
+        Console.WriteLine("m x m.Inv() = " + product);
+        bool mult_success = (product - mi).Nears(mzero, epsilon);
+        string mult_str = "Multiplication " + (mult_success ? "Success" : "Failure");
+        Vec3<double> vzero = new();
+        Console.WriteLine("Vector 0 = " + vzero);
+        Vec3<double> x = Vec3<double>.Unit(Axis.X);
+        Console.WriteLine($"Vector x = {x}");
+        Mat3<double> rot = Mat3<double>.Rot(Axis.Z, Math.PI / 2);
+        Console.WriteLine($"Rotation Matrix rot = {rot}");
+        var y_frontrot = rot * x;
+        Console.WriteLine($"rot * x = {y_frontrot}");
+        var y_backrot = x * rot;
+        Console.WriteLine($"x * rot = {y_backrot}");
+        bool rot_success = (y_frontrot + y_backrot).Nears(vzero, epsilon);
+        string rot_str = "Rotation " + (rot_success ? "Success" : $"Failure: Got {y_frontrot} and {y_backrot}");
+        Console.WriteLine($"Summary:\n{mult_str}\n{rot_str}");
         break;
     case BenchmarkType.LargeDataTest:
         _ = BenchmarkRunner.Run<LargeDataTester>();

@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using RanSharp.Performance;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace RanSharp.Maths
 {
@@ -8,8 +8,8 @@ namespace RanSharp.Maths
     /// Fixed-size vector3 struct with special reloaded operators and optimized loop speeds.
     /// <br/>Absolute value (Abs(a)) =========== +a
     /// <br/>Normalized value (a.Normalized()): === ~a
-    /// <br/>Dot product (a·b) =============== a <![CDATA[&]]> b
-    /// <br/>Angle between (a·b/(|a||b|)) ======== a ^ b
+    /// <br/>Dot product (a·b) =============== a * b
+    /// <br/>Angle between ((a·b)/(|a|*|b|)) ======== a / b
     /// <br/>Cross product (a X b) ============ a % b
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -44,13 +44,11 @@ namespace RanSharp.Maths
         public static implicit operator List<T>(Vec3<T> vec) => new() { vec.X, vec.Y, vec.Z };
         public static implicit operator Span<T>(Vec3<T> vec) => new(new[] { vec.X, vec.Y, vec.Z });
         public static implicit operator ReadOnlySpan<T>(Vec3<T> vec) => new(new[] { vec.X, vec.Y, vec.Z });
-        public static T Arithmetic1(T a, Func<double, double> func) => T.CreateSaturating(func(double.CreateSaturating(a)));
-        public static T Arithmetic2(T a, T b, Func<double, double, double> func) => T.CreateSaturating(func(double.CreateSaturating(a), double.CreateSaturating(b)));
         public T Max() => X > Y ? (X > Z ? X : Z) : (Y > Z ? Y : Z);
         public T Min() => X < Y ? (X < Z ? X : Z) : (Y < Z ? Y : Z);
         public T Sum() => X + Y + Z;
         public T Mag2() => X * X + Y * Y + Z * Z;
-        public T Mag() => Vec3<T>.Arithmetic1(Mag2(), Math.Sqrt);
+        public T Mag() => Calc<T>.Calc1(Mag2(), Math.Sqrt);
         public T this[int index]
         {
             get => index switch
@@ -72,6 +70,13 @@ namespace RanSharp.Maths
             return X == vec.X && Y == vec.Y && Z == vec.Z;
         }
         public override int GetHashCode() => HashCode.Combine(X.GetHashCode(), Y.GetHashCode(), Z.GetHashCode());
+        public bool Nears(Vec3<T> vec, T epsilon)
+        {
+            bool x = X > vec.X ? X - vec.X < epsilon : vec.X - X < epsilon;
+            bool y = Y > vec.Y ? Y - vec.Y < epsilon : vec.Y - Y < epsilon;
+            bool z = Z > vec.Z ? Z - vec.Z < epsilon : vec.Z - Z < epsilon;
+            return x && y && z;
+        }
         public bool TrueForAll(Func<T, bool> func) => func(X) && func(Y) && func(Z);
         public bool TrueForAny(Func<T, bool> func) => func(X) || func(Y) || func(Z);
         public static Vec3<T> Zero() => new();
@@ -87,6 +92,8 @@ namespace RanSharp.Maths
             };
         }
         public static Vec3<T> Unit(Axis axis) => Unit((int)axis);
+
+        #region Operators
         /// <summary>
         /// Absolute value of a
         /// </summary>
@@ -108,22 +115,26 @@ namespace RanSharp.Maths
         public static Vec3<T> operator -(Vec3<T> a, Vec3<T> b) => new(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
         public static Vec3<T> operator -(Vec3<T> a, T b) => new(a.X - b, a.Y - b, a.Z - b);
         public static Vec3<T> operator -(T a, Vec3<T> b) => new(a - b.X, a - b.Y, a - b.Z);
-        public static Vec3<T> operator *(Vec3<T> a, Vec3<T> b) => new(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
         public static Vec3<T> operator *(Vec3<T> a, T b) => new(a.X * b, a.Y * b, a.Z * b);
         public static Vec3<T> operator *(T a, Vec3<T> b) => new(a * b.X, a * b.Y, a * b.Z);
-        public static Vec3<T> operator /(Vec3<T> a, Vec3<T> b) => new(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
         public static Vec3<T> operator /(Vec3<T> a, T b) => new(a.X / b, a.Y / b, a.Z / b);
         public static Vec3<T> operator /(T a, Vec3<T> b) => new(a / b.X, a / b.Y, a / b.Z);
+        public static Vec3<T> operator ^(Vec3<T> a, T b) => new(Calc<T>.Calc2(a.X, b, Math.Pow), Calc<T>.Calc2(a.Y, b, Math.Pow), Calc<T>.Calc2(a.Z, b, Math.Pow));
+        public static Vec3<T> operator ^(T a, Vec3<T> b) => new(Calc<T>.Calc2(a, b.X, Math.Pow), Calc<T>.Calc2(a, b.Y, Math.Pow), Calc<T>.Calc2(a, b.Z, Math.Pow));
         /// <summary>
         /// Dot product of a and b
         /// </summary>
         /// <param name="a">Vec3 a</param>
         /// <param name="b">Vec3 b</param>
         /// <returns>The dot product a·b of type T</returns>
-        public static T operator &(Vec3<T> a, Vec3<T> b) => (a * b).Sum();
-        public static T operator ^(Vec3<T> a, Vec3<T> b) => Vec3<T>.Arithmetic1(a & b / (a.Mag() * b.Mag()), Math.Acos);
-        public static Vec3<T> operator ^(Vec3<T> a, T b) => new(Vec3<T>.Arithmetic2(a.X, b, Math.Pow), Vec3<T>.Arithmetic2(a.Y, b, Math.Pow), Vec3<T>.Arithmetic2(a.Z, b, Math.Pow));
-        public static Vec3<T> operator ^(T a, Vec3<T> b) => new(Vec3<T>.Arithmetic2(a, b.X, Math.Pow), Vec3<T>.Arithmetic2(a, b.Y, Math.Pow), Vec3<T>.Arithmetic2(a, b.Z, Math.Pow));
+        public static T operator *(Vec3<T> a, Vec3<T> b) => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+        /// <summary>
+        /// Angle between a and b
+        /// </summary>
+        /// <param name="a">Vec3 a</param>
+        /// <param name="b">Vec3 b</param>
+        /// <returns>(a·b)/(|a|*|b|)</returns>
+        public static T operator /(Vec3<T> a, Vec3<T> b) => Calc<T>.Calc1(a * b / (a.Mag() * b.Mag()), Math.Acos);
         /// <summary>
         /// Cross product of a and b
         /// </summary>
@@ -135,5 +146,6 @@ namespace RanSharp.Maths
         public static bool operator !=(Vec3<T> a, Vec3<T> b) => !a.Equals(b);
         public static bool operator >(Vec3<T> a, Vec3<T> b) => a.Mag2() > b.Mag2();
         public static bool operator <(Vec3<T> a, Vec3<T> b) => a.Mag2() < b.Mag2();
+        #endregion
     }
 }
