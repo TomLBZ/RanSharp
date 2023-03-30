@@ -423,9 +423,11 @@ namespace RanSharp.Performance
         public FastList<T> Composite(FastList<T> list, Func<T, T, T> f) => Loop<T>.Composite(this, list, f);
         public FastList<T> Combine(T b, Func<T, T, T> f) => Loop<T>.Combine(this, b, f);
         public FastList<T> Map(Func<T, T> f) => Loop<T>.Map(this, f);
+        public FastList<T> ReMap(Func<int, T> f) => Loop<T>.ReMap(this, f);
         public void CompositeInPlace(FastList<T> list, Func<T, T, T> f) => Loop<T>.CompositeInPlace(this, list, f);
         public void CombineInPlace(T b, Func<T, T, T> f) => Loop<T>.CombineInPlace(this, b, f);
         public void MapInPlace(Func<T, T> f) => Loop<T>.MapInPlace(this, f);
+        public void ReMapInPlace(Func<int, T> f) => Loop<T>.ReMapInPlace(this, f);
         public void Apply(Action<T> action) => Loop<T>.Apply(this, action);
         public T Accumulate(T seed, Func<T, T, T> f) => Loop<T>.Accumulate(this, seed, f);
         public bool TrueForAll(Predicate<T> match)

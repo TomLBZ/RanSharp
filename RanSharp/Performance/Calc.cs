@@ -11,6 +11,8 @@ namespace RanSharp.Performance
             T.CreateSaturating(f(double.CreateSaturating(a), double.CreateSaturating(b)));
         public static T Calc3(T a, T b, T c, Func<double, double, double, double> f) =>
             T.CreateSaturating(f(double.CreateSaturating(a), double.CreateSaturating(b), double.CreateSaturating(c)));
+        public static bool Near(T a, T b, double epsilon = 1e-9) =>
+            Math.Abs(double.CreateSaturating(a) - double.CreateSaturating(b)) < epsilon;
         #endregion
     }
 }

@@ -13,11 +13,12 @@ namespace RanSharp.Maths
     /// <br/>Cross product (a X b) ============ a % b
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public readonly struct Vec3<T> where T : struct, INumber<T>
+    public readonly struct Vec3<T> : IVect<T> where T : struct, INumber<T>
     {
         public readonly T X;
         public readonly T Y;
         public readonly T Z;
+        public readonly int Length => 3;
         public Vec3((T, T, T) tuple) { X = tuple.Item1; Y = tuple.Item2; Z = tuple.Item3; }
         public Vec3(T x, T y, T z) { X = x; Y = y; Z = z; }
         public Vec3(List<T> values) { if (values.Count < 3) throw new ArgumentException("Needs 3 Arguments!"); X = values[0]; Y = values[1]; Z = values[2]; }
@@ -70,13 +71,8 @@ namespace RanSharp.Maths
             return X == vec.X && Y == vec.Y && Z == vec.Z;
         }
         public override int GetHashCode() => HashCode.Combine(X.GetHashCode(), Y.GetHashCode(), Z.GetHashCode());
-        public bool Nears(Vec3<T> vec, T epsilon)
-        {
-            bool x = X > vec.X ? X - vec.X < epsilon : vec.X - X < epsilon;
-            bool y = Y > vec.Y ? Y - vec.Y < epsilon : vec.Y - Y < epsilon;
-            bool z = Z > vec.Z ? Z - vec.Z < epsilon : vec.Z - Z < epsilon;
-            return x && y && z;
-        }
+        public bool Near(Vec3<T> vec, double epsilon = 1e-9) =>
+            Calc<T>.Near(vec.X, X, epsilon) && Calc<T>.Near(vec.Y, Y, epsilon) && Calc<T>.Near(vec.Z, Z, epsilon);
         public bool TrueForAll(Func<T, bool> func) => func(X) && func(Y) && func(Z);
         public bool TrueForAny(Func<T, bool> func) => func(X) || func(Y) || func(Z);
         public static Vec3<T> Zero() => new();

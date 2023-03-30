@@ -30,6 +30,14 @@ namespace RanSharp.Performance
         public static List<float> Map(this List<float> a, Func<float, float> f) => Loop<float>.Map(a, f);
         public static List<double> Map(this List<double> a, Func<double, double> f) => Loop<double>.Map(a, f);
         public static List<string> Map(this List<string> a, Func<string, string> f) => Loop<string>.Map(a, f);
+        public static List<bool> ReMap(this List<bool> a, Func<int, bool> f) => Loop<bool>.ReMap(a, f);
+        public static List<byte> ReMap(this List<byte> a, Func<int, byte> f) => Loop<byte>.ReMap(a, f);
+        public static List<char> ReMap(this List<char> a, Func<int, char> f) => Loop<char>.ReMap(a, f);
+        public static List<int> ReMap(this List<int> a, Func<int, int> f) => Loop<int>.ReMap(a, f);
+        public static List<long> ReMap(this List<long> a, Func<int, long> f) => Loop<long>.ReMap(a, f);
+        public static List<float> ReMap(this List<float> a, Func<int, float> f) => Loop<float>.ReMap(a, f);
+        public static List<double> ReMap(this List<double> a, Func<int, double> f) => Loop<double>.ReMap(a, f);
+        public static List<string> ReMap(this List<string> a, Func<int, string> f) => Loop<string>.ReMap(a, f);
         public static void Apply(this List<bool> a, Action<bool> f) => Loop<bool>.Apply(a, f);
         public static void Apply(this List<byte> a, Action<byte> f) => Loop<byte>.Apply(a, f);
         public static void Apply(this List<char> a, Action<char> f) => Loop<char>.Apply(a, f);
@@ -86,6 +94,14 @@ namespace RanSharp.Performance
         public static void MapInPlace(this List<float> a, Func<float, float> f) => Loop<float>.MapInPlace(a, f);
         public static void MapInPlace(this List<double> a, Func<double, double> f) => Loop<double>.MapInPlace(a, f);
         public static void MapInPlace(this List<string> a, Func<string, string> f) => Loop<string>.MapInPlace(a, f);
+        public static void ReMapInPlace(this List<bool> a, Func<int, bool> f) => Loop<bool>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this List<byte> a, Func<int, byte> f) => Loop<byte>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this List<char> a, Func<int, char> f) => Loop<char>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this List<int> a, Func<int, int> f) => Loop<int>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this List<long> a, Func<int, long> f) => Loop<long>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this List<float> a, Func<int, float> f) => Loop<float>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this List<double> a, Func<int, double> f) => Loop<double>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this List<string> a, Func<int, string> f) => Loop<string>.ReMapInPlace(a, f);
         #endregion
 
         #region Array Extensions
@@ -113,6 +129,14 @@ namespace RanSharp.Performance
         public static float[] Map(this float[] a, Func<float, float> f) => Loop<float>.Map(a, f);
         public static double[] Map(this double[] a, Func<double, double> f) => Loop<double>.Map(a, f);
         public static string[] Map(this string[] a, Func<string, string> f) => Loop<string>.Map(a, f);
+        public static bool[] ReMap(this bool[] a, Func<int, bool> f) => Loop<bool>.ReMap(a, f);
+        public static byte[] ReMap(this byte[] a, Func<int, byte> f) => Loop<byte>.ReMap(a, f);
+        public static char[] ReMap(this char[] a, Func<int, char> f) => Loop<char>.ReMap(a, f);
+        public static int[] ReMap(this int[] a, Func<int, int> f) => Loop<int>.ReMap(a, f);
+        public static long[] ReMap(this long[] a, Func<int, long> f) => Loop<long>.ReMap(a, f);
+        public static float[] ReMap(this float[] a, Func<int, float> f) => Loop<float>.ReMap(a, f);
+        public static double[] ReMap(this double[] a, Func<int, double> f) => Loop<double>.ReMap(a, f);
+        public static string[] ReMap(this string[] a, Func<int, string> f) => Loop<string>.ReMap(a, f);
         public static void Apply(this bool[] a, Action<bool> f) => Loop<bool>.Apply(a, f);
         public static void Apply(this byte[] a, Action<byte> f) => Loop<byte>.Apply(a, f);
         public static void Apply(this char[] a, Action<char> f) => Loop<char>.Apply(a, f);
@@ -169,8 +193,14 @@ namespace RanSharp.Performance
         public static void MapInPlace(this float[] a, Func<float, float> f) => Loop<float>.MapInPlace(a, f);
         public static void MapInPlace(this double[] a, Func<double, double> f) => Loop<double>.MapInPlace(a, f);
         public static void MapInPlace(this string[] a, Func<string, string> f) => Loop<string>.MapInPlace(a, f);
+        public static void ReMapInPlace(this bool[] a, Func<int, bool> f) => Loop<bool>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this byte[] a, Func<int, byte> f) => Loop<byte>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this char[] a, Func<int, char> f) => Loop<char>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this int[] a, Func<int, int> f) => Loop<int>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this long[] a, Func<int, long> f) => Loop<long>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this float[] a, Func<int, float> f) => Loop<float>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this double[] a, Func<int, double> f) => Loop<double>.ReMapInPlace(a, f);
+        public static void ReMapInPlace(this string[] a, Func<int, string> f) => Loop<string>.ReMapInPlace(a, f);
         #endregion
-
-
     }
 }

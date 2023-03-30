@@ -9,35 +9,38 @@ BenchmarkType btype = BenchmarkType.None;
 switch (btype)
 {
     case BenchmarkType.None:
-        double epsilon = 1e-10;
-        Console.WriteLine($"Epsilon = {epsilon}");
+        // fixed 3d types
         Mat3<double> mzero = new();
-        Console.WriteLine("Matrix 0 = " + mzero);
-        Mat3<double> mone = Mat3<double>.Ones();
-        Console.WriteLine("Matrix 1 = " + mone);
         Mat3<double> mi = Mat3<double>.I();
-        Console.WriteLine("Matrix I = " + mi);
         Mat3<double> m = new(2, 4, 1, 3, 5, 6, 5, 7, 8);
-        Console.WriteLine("Matrix m = " + m);
         var invm = m.Inv();
-        Console.WriteLine("m.Inv() = " + invm);
         var product = m * invm;
-        Console.WriteLine("m x m.Inv() = " + product);
-        bool mult_success = (product - mi).Nears(mzero, epsilon);
+        bool mult_success = (product - mi).Near(mzero);
         string mult_str = "Multiplication " + (mult_success ? "Success" : "Failure");
         Vec3<double> vzero = new();
-        Console.WriteLine("Vector 0 = " + vzero);
         Vec3<double> x = Vec3<double>.Unit(Axis.X);
-        Console.WriteLine($"Vector x = {x}");
         Mat3<double> rot = Mat3<double>.Rot(Axis.Z, Math.PI / 2);
-        Console.WriteLine($"Rotation Matrix rot = {rot}");
         var y_frontrot = rot * x;
-        Console.WriteLine($"rot * x = {y_frontrot}");
         var y_backrot = x * rot;
-        Console.WriteLine($"x * rot = {y_backrot}");
-        bool rot_success = (y_frontrot + y_backrot).Nears(vzero, epsilon);
+        bool rot_success = (y_frontrot + y_backrot).Near(vzero);
         string rot_str = "Rotation " + (rot_success ? "Success" : $"Failure: Got {y_frontrot} and {y_backrot}");
-        Console.WriteLine($"Summary:\n{mult_str}\n{rot_str}");
+        Console.WriteLine($"Fixed Length test:\n{mult_str}\n{rot_str}");
+        // generic nd types
+        Matrix<double> M_zero = new(3, 3);
+        Matrix<double> M_i = Matrix<double>.I(3);
+        Matrix<double> M = new(new double[,] { { 6, 3, 4 }, { 5, 6, 7 }, { 6, 2, 4 } });
+        var invM = M.Inv();
+        var productM = M * invM;
+        bool multM_success = (productM - M_i).Near(M_zero);
+        string multM_str = "Multiplication " + (multM_success ? "Success" : "Failure");
+        ArrVector<double> V_zero = new(3);
+        ArrVector<double> X = ArrVector<double>.Unit(3, Axis.X);
+        Matrix<double> Rot = Matrix<double>.Rot3D(Axis.Z, Math.PI / 2);
+        var Y_frontrot = Rot * X;
+        var Y_backrot = X * Rot;
+        bool rotM_success = (Y_frontrot + Y_backrot).Near(V_zero);
+        string rotM_str = "Rotation " + (rotM_success ? "Success" : $"Failure: Got {Y_frontrot} and {Y_backrot}");
+        Console.WriteLine($"Generic Length test:\n{multM_str}\n{rotM_str}");
         break;
     case BenchmarkType.LargeDataTest:
         _ = BenchmarkRunner.Run<LargeDataTester>();
@@ -160,7 +163,7 @@ namespace Benchmarking
         private double[] dataA;
         private double[] dataB;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        private Random rnd = new();
+        private readonly Random rnd = new();
         [Params((int)1e7)]
         public int N;
 

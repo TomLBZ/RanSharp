@@ -158,7 +158,7 @@ namespace RanSharp.Maths
         public D[] To1dArray() => new D[] { R1[0], R1[1], R1[2], R2[0], R2[1], R2[2], R3[0], R3[1], R3[2] };
         public Vec3<D>[] Rows() => new Vec3<D>[] { R1, R2, R3 };
         public Vec3<D>[] Columns() => new Vec3<D>[] { new(R1[0], R2[0], R3[0]), new(R1[1], R2[1], R3[1]), new(R1[2], R2[2], R3[2]) };
-        public bool Nears(Mat3<D> mat, D epsilon) => R1.Nears(mat.R1, epsilon) && R2.Nears(mat.R2, epsilon) && R3.Nears(mat.R3, epsilon);
+        public bool Near(Mat3<D> mat, double epsilon = 1e-9) => R1.Near(mat.R1, epsilon) && R2.Near(mat.R2, epsilon) && R3.Near(mat.R3, epsilon);
 
         #endregion
 

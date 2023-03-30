@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text;
 using RanSharp.Maths;
 
 namespace RanSharp.Performance
@@ -68,6 +69,20 @@ namespace RanSharp.Performance
             if (null == a) throw new ArgumentNullException(nameof(a));
             Span<T> spana = CollectionsMarshal.AsSpan(a);
             for (int i = 0; i < spana.Length; i++) spana[i] = func(spana[i]);
+        }
+        public static List<T> ReMap(List<T>? a, Func<int, T> func)
+        {
+            if (null == a) throw new ArgumentNullException(nameof(a));
+            List<T> result = new(a.Count);
+            for (int i = 0; i < a.Count; i++)
+                result.Add(func(i));
+            return result;
+        }
+        public static void ReMapInPlace(List<T>? a, Func<int, T> func)
+        {
+            if (null == a) throw new ArgumentNullException(nameof(a));
+            Span<T> spana = CollectionsMarshal.AsSpan(a);
+            for (int i = 0; i < spana.Length; i++) spana[i] = func(i);
         }
         public static T Accumulate(List<T> a, T acc, Func<T, T, T> func)
         {
@@ -154,6 +169,22 @@ namespace RanSharp.Performance
             Span<T> spana = a.ItemsUnsafe.AsSpan(0, a.Count);
             for (int i = 0; i < spana.Length; i++) spana[i] = func(spana[i]);
         }
+        public static FastList<T> ReMap(FastList<T>? a, Func<int, T> func)
+        {
+            if (null == a) throw new ArgumentNullException(nameof(a));
+            FastList<T> result = new(a.Count);
+            Span<T> spanr = result.ItemsUnsafe.AsSpan(); // full span
+            for (int i = 0; i < spanr.Length; i++)
+                spanr[i] = func(i);
+            result.UpdateCountUnsafe(a.Count);
+            return result;
+        }
+        public static void ReMapInPlace(FastList<T>? a, Func<int, T> func)
+        {
+            if (null == a) throw new ArgumentNullException(nameof(a));
+            Span<T> spana = a.ItemsUnsafe.AsSpan(0, a.Count);
+            for (int i = 0; i < spana.Length; i++) spana[i] = func(i);
+        }
         public static void Apply(FastList<T>? a, Action<T> action)
         {
             if (null == a) throw new ArgumentNullException(nameof(a));
@@ -236,6 +267,21 @@ namespace RanSharp.Performance
             Span<T> spana = a.AsSpan();
             for (int i = 0; i < spana.Length; i++) spana[i] = func(spana[i]);
         }
+        public static T[] ReMap(T[]? a, Func<int, T> func)
+        {
+            if (null == a) throw new ArgumentNullException(nameof(a));
+            T[] result = new T[a.Length];
+            Span<T> spanr = result.AsSpan();
+            for (int i = 0; i < spanr.Length; i++)
+                spanr[i] = func(i);
+            return result;
+        }
+        public static void ReMapInPlace(T[]? a, Func<int, T> func)
+        {
+            if (null == a) throw new ArgumentNullException(nameof(a));
+            Span<T> spana = a.AsSpan();
+            for (int i = 0; i < spana.Length; i++) spana[i] = func(i);
+        }
         public static void Apply(T[]? a, Action<T> action)
         {
             if (null == a) throw new ArgumentNullException(nameof(a));
@@ -262,6 +308,21 @@ namespace RanSharp.Performance
             for (int i = 0; i < span.Length; i++)
                 if (func(span[i])) return true;
             return false;
+        }
+        #endregion
+
+        #region Print Extensions
+        public static string ReadableString(T[] a) => $"({string.Join(", ", a)})";
+        public static string ReadableString(T[][] a)
+        {
+            StringBuilder sb = new('[');
+            for (int i = 0; i < a.Length; i++)
+            {
+                sb.Append(ReadableString(a[i]));
+                if (i < a.Length - 1) sb.Append("; ");
+            }
+            sb.Append(']');
+            return sb.ToString();
         }
         #endregion
     }
@@ -311,6 +372,18 @@ namespace RanSharp.Performance
         {
             Span<T> spana = a;
             for (int i = 0; i < spana.Length; i++) spana[i] = func(spana[i]);
+        }
+        public static ArrVector<T> ReMap(ArrVector<T> a, Func<int, T> func)
+        {
+            ArrVector<T> result = new(a.Length);
+            Span<T> spanv = result;
+            for (int i = 0; i < spanv.Length; i++) spanv[i] = func(i);
+            return result;
+        }
+        public static void ReMapInPlace(ArrVector<T> a, Func<int, T> func)
+        {
+            Span<T> spana = a;
+            for (int i = 0; i < spana.Length; i++) spana[i] = func(i);
         }
         public static T Accumulate(ArrVector<T> a, T acc, Func<T, T, T> func)
         {

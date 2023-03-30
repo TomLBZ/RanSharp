@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel;
+using System.Numerics;
 using System.Text;
 using RanSharp.Performance;
 
@@ -14,30 +15,50 @@ namespace RanSharp.Maths
     /// <br/>Optimized Loop: ForEach, Accumulate, MapBy, CombineWith, CompositeWith
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public readonly struct ArrVector<T> where T : struct, INumber<T>
+    public readonly struct ArrVector<T> : IVect<T> where T : struct, INumber<T>
     {
         #region Private States
         private readonly T[] values;
+        private readonly double Epsilon = 1e-9;
         #endregion
 
-        #region Static Values
-        public static readonly T[] zeroArray = Array.Empty<T>();
-        public static readonly T threeValue = T.CreateSaturating(3); // used for cross product checks
-        public static readonly T minValue = T.CreateSaturating(double.MinValue);
-        public static readonly T maxValue = T.CreateSaturating(double.MaxValue);
+        #region Private Static Values
+        private static readonly T[] zeroArray = Array.Empty<T>();
+        private static readonly T minValue = T.CreateSaturating(double.MinValue);
+        private static readonly T maxValue = T.CreateSaturating(double.MaxValue);
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Length of this ArrVector.
+        /// </summary>
         public int Length => values.Length;
+        /// <summary>
+        /// The X Component. Only available if Length >= 1.
+        /// </summary>
         public T X => values[0];
+        /// <summary>
+        /// The Y Component. Only available if Length >= 2.
+        /// </summary>
         public T Y => values[1];
+        /// <summary>
+        /// The Z Component. Only available if Length >= 3.
+        /// </summary>
         public T Z => values[2];
+        /// <summary>
+        /// The W Component. Only available if Length >= 4.
+        /// </summary>
         public T W => values[3];
+        /// <summary>
+        /// Accessing the ArrVector data by index.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public T this[int index] => values[index];
         #endregion
 
         #region Constructors
-        public ArrVector(params T[] values) { this.values = values ?? zeroArray; }
+        public ArrVector(params T[] values) { this.values = values.ToArray() ?? zeroArray; }
         public ArrVector(int length, T initValue = default)
         {
             values = length > 0 ? new T[length] : zeroArray;
@@ -65,6 +86,13 @@ namespace RanSharp.Maths
             for (int i = 0; i < span.Length; i++)
                 span[i] = generator(i);
         }
+        public ArrVector(IVect<T> v)
+        {
+            values = v.Length > 0 ? new T[v.Length] : zeroArray;
+            Span<T> span = values.AsSpan();
+            for (int i = 0; i < span.Length; i++)
+                span[i] = v[i];
+        }
         #endregion
 
         #region Converters
@@ -72,10 +100,10 @@ namespace RanSharp.Maths
         public static implicit operator ArrVector<T>(List<T> values) => new(values);
         public static implicit operator ArrVector<T>(ReadOnlySpan<T> values) => new(values);
         public static implicit operator ArrVector<T>(Span<T> values) => new(values);
-        public static implicit operator T[](ArrVector<T> values) => values.values;
+        public static implicit operator T[](ArrVector<T> values) => values.values.ToArray();
         public static implicit operator List<T>(ArrVector<T> values) => values.values.ToList();
-        public static implicit operator ReadOnlySpan<T>(ArrVector<T> values) => values.values.AsSpan();
-        public static implicit operator Span<T>(ArrVector<T> values) => values.values.AsSpan();
+        public static implicit operator ReadOnlySpan<T>(ArrVector<T> values) => values.values.AsSpan(); // pointers! (readonly)
+        public static implicit operator Span<T>(ArrVector<T> values) => values.values.AsSpan(); // pointers!
         #endregion
 
         #region Public Override Methods
@@ -106,23 +134,41 @@ namespace RanSharp.Maths
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public T Max() => Accumulate(ArrVector<T>.minValue, (acc, x) => x > acc ? x : acc);
         public T Min() => Accumulate(ArrVector<T>.maxValue, (acc, x) => x < acc ? x : acc);
         public T Sum() => Accumulate(T.Zero, (acc, x) => acc + x);
         public T Mag2() => Accumulate(T.Zero, (acc, x) => acc + x * x);
         public T Mag() => Calc<T>.Calc1(Mag2(), Math.Sqrt);
-        public ArrVector<T> Normalized() => this / Mag();
+        public ArrVector<T> Norm() => this / Mag();
         public ArrVector<T> Abs() => Map(x => x < T.Zero ? -x : x);
         public ArrVector<T> Composite(ArrVector<T> other, Func<T, T, T> func) => NumericLoop<T>.Composite(this, other, func);
         public ArrVector<T> Combine(T b, Func<T, T, T> func) => NumericLoop<T>.Combine(this, b, func);
         public ArrVector<T> Map(Func<T, T> func) => NumericLoop<T>.Map(this, func);
+        public ArrVector<T> ReMap(Func<int, T> func) => NumericLoop<T>.ReMap(this, func);
         public void CompositeInPlace(ArrVector<T> other, Func<T, T, T> func) => NumericLoop<T>.CompositeInPlace(this, other, func);
         public void CombineInPlace(T b, Func<T, T, T> func) => NumericLoop<T>.CombineInPlace(this, b, func);
         public void MapInPlace(Func<T, T> func) => NumericLoop<T>.MapInPlace(this, func);
+        public void ReMapInPlace(Func<int, T> func) => NumericLoop<T>.ReMapInPlace(this, func);
         public T Accumulate(T acc, Func<T, T, T> func) => NumericLoop<T>.Accumulate(this, acc, func);
         public void Apply(Action<T> action) => NumericLoop<T>.Apply(this, action);
         public bool TrueForAll(Func<T, bool> func) => NumericLoop<T>.TrueForAll(this, func);
         public bool TrueForAny(Func<T, bool> func) => NumericLoop<T>.TrueForAny(this, func);
+        public bool Near(ArrVector<T> other)
+        {
+            ReadOnlySpan<T> spana = values.AsSpan();
+            ReadOnlySpan<T> spanb = other.values.AsSpan();
+            bool isNear = true;
+            for (int i = 0; i < spana.Length; i++)
+            {
+                isNear &= Calc<T>.Near(spana[i], spanb[i], Epsilon);
+                if (!isNear) break;
+            }
+            return isNear;
+        }
         #endregion
 
         #region Public Static Methods
@@ -155,7 +201,7 @@ namespace RanSharp.Maths
         /// </summary>
         /// <param name="a">ArrVector a</param>
         /// <returns>ArrVector a.Normalized()</returns>
-        public static ArrVector<T> operator ~(ArrVector<T> a) => a.Normalized();
+        public static ArrVector<T> operator ~(ArrVector<T> a) => a.Norm();
         // binary operators
         public static ArrVector<T> operator +(ArrVector<T> a, ArrVector<T> b) => a.Composite(b, (a, b) => a + b);
         public static ArrVector<T> operator +(ArrVector<T> a, T b) => a.Combine(b, (a, b) => a + b);
