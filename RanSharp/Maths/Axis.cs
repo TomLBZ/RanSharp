@@ -1,4 +1,17 @@
 ﻿namespace RanSharp.Maths
 {
-    public enum Axis { X = 0, Y = 1, Z = 2, W = 3 }
+    /// <summary>
+    /// Axis enumeration.
+    /// </summary>
+    public enum Axis
+    {
+        /// <summary>Represents the X axis.</summary>
+        X = 0,
+        /// <summary>Represents the Y axis.</summary>
+        Y = 1,
+        /// <summary>Represents the Z axis.</summary>
+        Z = 2,
+        /// <summary>Represents the W axis.</summary>
+        W = 3
+    }
 }

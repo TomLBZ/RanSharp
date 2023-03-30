@@ -5,10 +5,9 @@ using System.Numerics;
 namespace RanSharp.Maths
 {
     /// <summary>
-    /// Represents a matrix of dimension RxC, where R and C are dimensions.
+    /// Represents a matrix of any dimension.
     /// <br/>Special Usages:<br/>
     /// Generic Matrix Multiplication: <code>m1 * m2</code>
-    /// Vector x Matrix: <code>v * m</code> or <code>m * v</code>, where v is a vector and m is a matrix.
     /// Note that the order of the operands matters and the dimensions of the vector and the matrix must allow multiplication.
     /// </summary>
     /// <typeparam name="D"></typeparam>
@@ -20,9 +19,21 @@ namespace RanSharp.Maths
         #endregion
 
         #region Properties
+        /// <summary>
+        /// The row count of the Matrix.
+        /// </summary>
         public readonly int RowCount;
+        /// <summary>
+        /// The column count of the Matrix.
+        /// </summary>
         public readonly int ColumnCount;
+        /// <summary>
+        /// The total number of elements in the Matrix.
+        /// </summary>
         public readonly int Count => RowCount * ColumnCount;
+        /// <summary>
+        /// The default epsilon value for Near() method.
+        /// </summary>
         public readonly double Epsilon = 1e-9;
         #endregion
 
