@@ -42,12 +42,18 @@ namespace RanSharp.Maths
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Creates a new Matrix with the row and column count specified.
+        /// </summary>
         public Matrix(int rowCount, int columnCount)
         {
             RowCount = rowCount;
             ColumnCount = columnCount;
             data = new(rowCount, i => new D[columnCount]);
         }
+        /// <summary>
+        /// Creates a new Matrix with the row and column count specified and initializes all elements to the specified value.
+        /// </summary>
         public Matrix(int rowCount, int columnCount, D initValue)
         {
             RowCount = rowCount;
@@ -59,6 +65,9 @@ namespace RanSharp.Maths
                 return row;
             });
         }
+        /// <summary>
+        /// Creates a new Matrix with the row and column count specified using data from the specified array.
+        /// </summary>
         public Matrix(int rowCount, int columnCount, D[] arr)
         {
             if (null == arr || arr.Length == 0) throw new ArgumentNullException(nameof(arr));
@@ -74,6 +83,9 @@ namespace RanSharp.Maths
                 data.Add(row);
             }
         }
+        /// <summary>
+        /// Creates a new Matrix using data from the specified 2D array.
+        /// </summary>
         public Matrix(D[,] values)
         {
             if (values is null) throw new NullReferenceException();
@@ -90,6 +102,9 @@ namespace RanSharp.Maths
                 data.Add(row);
             }
         }
+        /// <summary>
+        /// Creates a new Matrix using data from the specified jagged array.
+        /// </summary>
         public Matrix(params D[][] rows)
         {
             if (rows is null) throw new NullReferenceException(); // D[][] must be non-null
@@ -107,6 +122,9 @@ namespace RanSharp.Maths
                 data.Add(newrow);
             }
         }
+        /// <summary>
+        /// Creates a new Matrix using data from the given array of <see cref="IEnumerable{D}"/> representing rows.
+        /// </summary>
         public Matrix(params IEnumerable<D>[] rows)
         {
             if (rows is null) throw new NullReferenceException();
@@ -120,6 +138,9 @@ namespace RanSharp.Maths
                 data.Add(rows[i].ToArray());
             }
         }
+        /// <summary>
+        /// Creates a new Matrix using data from the given <see cref="IEnumerable{T}"/> of <typeparamref name="D"/>[] representing rows.
+        /// </summary>
         public Matrix(IEnumerable<D[]> rows)
         {
             if (rows is null) throw new NullReferenceException();
@@ -138,6 +159,9 @@ namespace RanSharp.Maths
                 data.Add(newrow);
             }
         }
+        /// <summary>
+        /// Creates a new Matrix using data from the given array of <see cref="ArrVector{D}"/> representing rows.
+        /// </summary>
         public Matrix(params ArrVector<D>[] rows)
         {
             if (rows is null) throw new NullReferenceException();
@@ -151,6 +175,9 @@ namespace RanSharp.Maths
                 data.Add(rows[i]); // implicit conversion returns a copy
             }
         }
+        /// <summary>
+        /// Creates a new Matrix using data from the given <see cref="Matrix{D}"/>.
+        /// </summary>
         public Matrix(Matrix<D> mat)
         {
             if (mat.Count == 0) throw new IndexOutOfRangeException();
@@ -159,6 +186,9 @@ namespace RanSharp.Maths
             FastList<ArrVector<D>> rows = mat.GetRows();
             data = new(RowCount, i => rows[i]);
         }
+        /// <summary>
+        /// Creates a new Matrix using the given row and column counts and a generator function for each element.
+        /// </summary>
         public Matrix(int rowCount, int columnCount, Func<int, int, D> generator)
         {
             if (rowCount <= 0 || columnCount <= 0) throw new ArgumentException("Row and Column counts must be > 0!");
@@ -174,6 +204,9 @@ namespace RanSharp.Maths
                 data.Add(row);
             }
         }
+        /// <summary>
+        /// Creates a new Matrix using the given row and column counts and a generator function for each row.
+        /// </summary>
         public Matrix(int rowCount, int columnCount, Func<int, D> rowGenerator)
         {
             if (rowCount <= 0 || columnCount <= 0) throw new ArgumentException("Row and Column counts must be > 0!");
@@ -195,12 +228,18 @@ namespace RanSharp.Maths
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Returns the rows of this matrix as a <see cref="FastList{T}"/> of <see cref="ArrVector{D}"/>.
+        /// </summary>
         public FastList<ArrVector<D>> GetRows()
         {
             FastList<ArrVector<D>> rows = new(RowCount);
             data.Apply(i => rows.Add(i.ToArray())); // copy before adding
             return rows;
         }
+        /// <summary>
+        /// Returns the columns of this matrix as a <see cref="FastList{T}"/> of <see cref="ArrVector{D}"/>.
+        /// </summary>
         public FastList<ArrVector<D>> GetColumns()
         {
             FastList<ArrVector<D>> cols = new();
@@ -214,16 +253,25 @@ namespace RanSharp.Maths
             }
             return cols;
         }
+        /// <summary>
+        /// The indexer for this matrix. Gets or sets the element at the given row and column.
+        /// </summary>
         public D this[int i, int j]
         {
             get { return data[i][j]; }
             set { data[i][j] = value; }
         }
+        /// <summary>
+        /// The indexer for this matrix. Gets or sets the row at the given index.
+        /// </summary>
         public D[] this[int row]
         {
             get { return data[row]; }
             set { data[row] = value; }
         }
+        /// <summary>
+        /// Composites this <see cref="Matrix{D}"/> with the given <see cref="Matrix{D}"/> using the given function. Returns a new <see cref="Matrix{D}"/> containing the result.
+        /// </summary>
         public Matrix<D> Composite(Matrix<D> b, Func<D, D, D> f)
         {
             if (RowCount != b.RowCount || ColumnCount != b.ColumnCount) throw new ArgumentException("Two matrices must have the same size!");
@@ -231,32 +279,53 @@ namespace RanSharp.Maths
             mat.CompositeInPlace(b, f);
             return mat;
         }
+        /// <summary>
+        /// Composites this <see cref="Matrix{D}"/> with the given <see cref="Matrix{D}"/> using the given function. Modifies this <see cref="Matrix{D}"/> to contain the result.
+        /// </summary>
         public void CompositeInPlace(Matrix<D> b, Func<D, D, D> f)
         {
             if (RowCount != b.RowCount || ColumnCount != b.ColumnCount) throw new ArgumentException("Two matrices must have the same size!");
             for (int i = 0; i < RowCount; i++)
                 Loop<D>.CompositeInPlace(data[i], b.data[i], f);
         }
+        /// <summary>
+        /// Combines each elements of this <see cref="Matrix{D}"/> with the given scalar <typeparamref name="D"/> using the given function. Returns a new <see cref="Matrix{D}"/> containing the result.
+        /// </summary>
         public Matrix<D> Combine(D b, Func<D, D, D> f)
         {
             Matrix<D> mat = new(this);
             mat.CombineInPlace(b, f);
             return mat;
         }
+        /// <summary>
+        /// Combines each elements of this <see cref="Matrix{D}"/> with the given scalar <typeparamref name="D"/> using the given function. Modifies this <see cref="Matrix{D}"/> to contain the result.
+        /// </summary>
         public void CombineInPlace(D b, Func<D, D, D> f) => data.Apply(row => Loop<D>.CombineInPlace(row, b, f));
+        /// <summary>
+        /// Maps each element of this <see cref="Matrix{D}"/> using the given function. Returns a new <see cref="Matrix{D}"/> containing the result.
+        /// </summary>
         public Matrix<D> Map(Func<D, D> f)
         {
             Matrix<D> newmat = new(this);
             newmat.MapInPlace(f);
             return newmat;
         }
+        /// <summary>
+        /// Maps each index of this <see cref="Matrix{D}"/> using the given function. Modifies this <see cref="Matrix{D}"/> to contain the result.
+        /// </summary>
         public Matrix<D> ReMap(Func<int, int, D> f)
         {
             Matrix<D> newmat = new(this);
             newmat.ReMapInPlace(f);
             return newmat;
         }
+        /// <summary>
+        /// Maps each element of this <see cref="Matrix{D}"/> using the given function. Modifies this <see cref="Matrix{D}"/> to contain the result.
+        /// </summary>
         public void MapInPlace(Func<D, D> f) => data.Apply(arr => Loop<D>.MapInPlace(arr, f));
+        /// <summary>
+        /// Maps each index of this <see cref="Matrix{D}"/> using the given function. Modifies this <see cref="Matrix{D}"/> to contain the result.
+        /// </summary>
         public void ReMapInPlace(Func<int, int, D> f)
         {
             for (int i = 0; i < RowCount; i++)
@@ -266,12 +335,21 @@ namespace RanSharp.Maths
                     span[j] = f(i, j);
             }
         }
+        /// <summary>
+        /// Applies the given action using each element of this <see cref="Matrix{D}"/> as the argument. Does not modify this <see cref="Matrix{D}"/>.
+        /// </summary>
         public void Apply(Action<D> action) => data.Apply(arr => Loop<D>.Apply(arr, action));
+        /// <summary>
+        /// Accumulates the elements of this <see cref="Matrix{D}"/> using the given function into the given accumulator. Returns the accumulated value.
+        /// </summary>
         public D Accumulate(D acc, Func<D, D, D> func)
         {
             data.Apply(row => Loop<D>.Accumulate(row, acc, func));
             return acc;
         }
+        /// <summary>
+        /// Returns true if the given function returns true for all elements of this <see cref="Matrix{D}"/>. Returns false otherwise.
+        /// </summary>
         public bool TrueForAll(Func<D, bool> func)
         {
             bool res = true;
@@ -282,6 +360,9 @@ namespace RanSharp.Maths
             }
             return res;
         }
+        /// <summary>
+        /// Returns true if the given function returns true for any element of this <see cref="Matrix{D}"/>. Returns false otherwise.
+        /// </summary>
         public bool TrueForAny(Func<D, bool> func)
         {
             bool res = false;
@@ -292,22 +373,43 @@ namespace RanSharp.Maths
             }
             return res;
         }
+        /// <summary>
+        /// Returns a new <see cref="Matrix{D}"/> where each element is the absolute value of the corresponding element of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public Matrix<D> Abs() => Map(x => x < D.Zero ? -x : x);
+        /// <summary>
+        /// Returns the sum of all elements of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public D Sum() => Accumulate(D.Zero, (acc, x) => acc + x);
+        /// <summary>
+        /// Returns the max value of all elements of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public D Max() => Accumulate(minValue, (acc, x) => x > acc ? x : acc);
+        /// <summary>
+        /// Returns the min value of all elements of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public D Min() => Accumulate(maxValue, (acc, x) => x < acc ? x : acc);
+        /// <summary>
+        /// Returns the transpose of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public Matrix<D> T()
         {
             FastList<ArrVector<D>> cols = new();
             GetColumns().ForEach(cols.Add);
             return cols;
         }
+        /// <summary>
+        /// Returns the inverse of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public Matrix<D> Inv()
         {
             D det = Det();
             if (Calc<D>.Near(det, D.Zero)) throw new DivideByZeroException(nameof(det));
             return Adj() / det;
         }
+        /// <summary>
+        /// Returns the determinant of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public D Det()
         {
             if (RowCount != ColumnCount) throw new Exception("Determinant does not exist!");
@@ -347,6 +449,9 @@ namespace RanSharp.Maths
             }
             return det;
         }
+        /// <summary>
+        /// Returns the adjoint of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public Matrix<D> Adj()
         {
             if (RowCount != ColumnCount) throw new Exception("Adjugate does not exist!");
@@ -360,6 +465,9 @@ namespace RanSharp.Maths
             }
             return res.T();
         }
+        /// <summary>
+        /// Returns the cofactor of this <see cref="Matrix{D}"/> at the given row and column.
+        /// </summary>
         public D Cofactor(int r, int c)
         {
             FastList<ArrVector<D>> rows = GetRows();
@@ -369,12 +477,18 @@ namespace RanSharp.Maths
             D coefficient = D.CreateSaturating(Math.Pow(-1, r + c));
             return coefficient * ((Matrix<D>)cols).Det();
         }
+        /// <summary>
+        /// Returns the normalized version of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public Matrix<D> Normalized()
         {
             D det = Det();
             if (det == D.Zero) throw new DivideByZeroException(nameof(det));
             return this / det;
         }
+        /// <summary>
+        /// Returns true if this <see cref="Matrix{D}"/> is equal to the given <see cref="Matrix{D}"/> at the precision of <see cref="Epsilon"/>.
+        /// </summary>
         public bool Near(Matrix<D> other)
         {
             if (RowCount != other.RowCount || ColumnCount != other.ColumnCount) return false;
@@ -395,7 +509,13 @@ namespace RanSharp.Maths
         #endregion
 
         #region Public Override Methods
+        /// <summary>
+        /// Returns the string representation of this <see cref="Matrix{D}"/>.
+        /// </summary>
         public override string ToString() => $"[{string.Join("; ", GetRows())}]";
+        /// <summary>
+        /// Returns true if this <see cref="Matrix{D}"/> is equal to the given <see cref="Matrix{D}"/>.
+        /// </summary>
         public override bool Equals([NotNullWhen(true)] object? obj)
         {
             if (obj is null) return false;
@@ -410,21 +530,33 @@ namespace RanSharp.Maths
             }
             return equals;
         }
-        public override int GetHashCode()
-        {
-            return data.GetHashCode();
-        }
+        /// <summary>
+        /// Returns the hash code of this <see cref="Matrix{D}"/>.
+        /// </summary>
+        public override int GetHashCode() { return data.GetHashCode(); }
         #endregion
 
         #region Static Methods
+        /// <summary>
+        /// Returns the zero <see cref="Matrix{D}"/> of the given row and column count.
+        /// </summary>
         public static Matrix<D> Zero(int rowCount, int columnCount) { return new(rowCount, columnCount, D.Zero); }
+        /// <summary>
+        /// Returns the one <see cref="Matrix{D}"/> of the given row and column count.
+        /// </summary>
         public static Matrix<D> One(int rowCount, int columnCount) { return new(rowCount, columnCount, D.One); }
+        /// <summary>
+        /// Returns the 2D rotation matrix of the given angle.
+        /// </summary>
         public static Matrix<D> Rot2D(D theta)
         {
             D sin = Calc<D>.Calc1(theta, Math.Sin);
             D cos = Calc<D>.Calc1(theta, Math.Cos);
             return new(2, 2, new D[] { cos, -sin, sin, cos });
         }
+        /// <summary>
+        /// Returns the 3D rotation matrix about the given <see cref="Axis"/> of the given angle.
+        /// </summary>
         public static Matrix<D> Rot3D(Axis axis, D theta)
         {
             D sin = Calc<D>.Calc1(theta, Math.Sin);
@@ -437,44 +569,88 @@ namespace RanSharp.Maths
                 _ => throw new ArgumentException("Axis must be X, Y or Z!")
             };
         }
+        /// <summary>
+        /// Returns the identity <see cref="Matrix{D}"/> of the given row count.
+        /// </summary>
         public static Matrix<D> I(int rows) => new(rows, rows, (i, j) => i == j ? D.One : D.Zero);
+        /// <summary>
+        /// Returns the upper triangular <see cref="Matrix{D}"/> of the given row count.
+        /// </summary>
         public static Matrix<D> UpperTrig(int rows) => new(rows, rows, (i, j) => i <= j ? D.One : D.Zero);
+        /// <summary>
+        /// Returns the lower triangular <see cref="Matrix{D}"/> of the given row count.
+        /// </summary>
         public static Matrix<D> LowerTrig(int rows) => new(rows, rows, (i, j) => i >= j ? D.One : D.Zero);
         #endregion
 
         #region Operators
         /// <summary>
-        /// Absolute value of a
+        /// Absolute value of mat
         /// </summary>
-        /// <param name="a">Matrix a</param>
-        /// <returns>Matrix Abs(a)</returns>
         public static Matrix<D> operator +(Matrix<D> mat) => mat.Abs();
+        /// <summary>
+        /// Negation of mat
+        /// </summary>
         public static Matrix<D> operator -(Matrix<D> mat) => mat.Map(x => -x);
+        /// <summary>
+        /// Elementwise increment of mat
+        /// </summary>
         public static Matrix<D> operator ++(Matrix<D> mat) => mat.Map(x => ++x);
+        /// <summary>
+        /// Elementwise decrement of mat
+        /// </summary>
         public static Matrix<D> operator --(Matrix<D> mat) => mat.Map(x => --x);
         /// <summary>
-        /// Normalized a
+        /// Normalized mat
         /// </summary>
-        /// <param name="a">Matrix a</param>
-        /// <returns>Matrix a.Normalized()</returns>
         public static Matrix<D> operator ~(Matrix<D> mat) => mat.Normalized();
+        /// <summary>
+        /// Elementwise addition of mat1 and mat2
+        /// </summary>
         public static Matrix<D> operator +(Matrix<D> mat1, Matrix<D> mat2) => mat1.Composite(mat2, (a, b) => a + b);
+        /// <summary>
+        /// Elementwise addition of scalar val and mat
+        /// </summary>
         public static Matrix<D> operator +(D val, Matrix<D> mat) => mat.Combine(val, (a, b) => a + b);
+        /// <summary>
+        /// Elementwise addition of mat and scalar val
+        /// </summary>
         public static Matrix<D> operator +(Matrix<D> mat, D val) => mat.Combine(val, (a, b) => a + b);
+        /// <summary>
+        /// Elementwise subtraction of mat1 and mat2
+        /// </summary>
         public static Matrix<D> operator -(Matrix<D> mat1, Matrix<D> mat2) => mat1.Composite(mat2, (a, b) => a - b);
+        /// <summary>
+        /// Elementwise subtraction of scalar val from mat
+        /// </summary>
         public static Matrix<D> operator -(D val, Matrix<D> mat) => mat.Combine(val, (a, b) => a - b);
+        /// <summary>
+        /// Elementwise subtraction of mat and scalar val
+        /// </summary>
         public static Matrix<D> operator -(Matrix<D> mat, D val) => mat.Combine(val, (a, b) => a - b);
+        /// <summary>
+        /// Elementwise multiplication of scalar val and mat
+        /// </summary>
         public static Matrix<D> operator *(D val, Matrix<D> mat) => mat.Combine(val, (a, b) => a * b);
+        /// <summary>
+        /// Elementwise multiplication of mat and scalar val
+        /// </summary>
         public static Matrix<D> operator *(Matrix<D> mat, D val) => mat.Combine(val, (a, b) => a * b);
+        /// <summary>
+        /// Matrix division mat / mat2 = mat * mat2.Inv()
+        /// </summary>
         public static Matrix<D> operator /(Matrix<D> mat1, Matrix<D> mat2) => mat1 * mat2.Inv();
+        /// <summary>
+        /// Elementwise division of scalar val and mat
+        /// </summary>
         public static Matrix<D> operator /(D val, Matrix<D> mat) => mat.Combine(val, (a, b) => a / b);
+        /// <summary>
+        /// Elementwise division of mat and scalar val
+        /// </summary>
         public static Matrix<D> operator /(Matrix<D> mat, D val) => mat.Combine(val, (a, b) => a / b);
         /// <summary>
-        /// Matrix multiplication
+        /// Matrix multiplication mat1 * mat2
         /// </summary>
-        /// <param name="a">Matrix a</param>
-        /// <param name="b">Matrix b</param>
-        /// <returns>Matrix a*b</returns>
         public static Matrix<D> operator *(Matrix<D> mat1, Matrix<D> mat2)
         {
             if (mat1.ColumnCount != mat2.RowCount) throw new ArgumentException("The column count of mat1 must be equal to the row count of mat2!");
@@ -483,11 +659,8 @@ namespace RanSharp.Maths
             return new(mat1.RowCount, mat2.ColumnCount, (r, c) => rows[r] * cols[c]);
         }
         /// <summary>
-        /// Vector and Matrix multiplication
+        /// Vector and Matrix multiplication v * m
         /// </summary>
-        /// <param name="a">ArrVector a</param>
-        /// <param name="b">Matrix b</param>
-        /// <returns>ArrVector a*b</returns>
         public static ArrVector<D> operator *(ArrVector<D> v, Matrix<D> m)
         {
             if (v.Length != m.RowCount) throw new ArgumentException("Vector length must be equal to the matrix row count!");
@@ -495,27 +668,36 @@ namespace RanSharp.Maths
             return new(m.ColumnCount, i => v * cols[i]);
         }
         /// <summary>
-        /// Matrix and Vector multiplication
+        /// Matrix and Vector multiplication m * v
         /// </summary>
-        /// <param name="a">Matrix a</param>
-        /// <param name="b">ArrVector b</param>
-        /// <returns>ArrVector a*b</returns>
         public static ArrVector<D> operator *(Matrix<D> m, ArrVector<D> v)
         {
             if (v.Length != m.ColumnCount) throw new ArgumentException("Vector length must be equal to the matrix column count!");
             FastList<ArrVector<D>> rows = m.GetRows();
             return new(m.RowCount, i => rows[i] * v);
         }
+        /// <summary>
+        /// Returns thue if mat1 and mat2 are equal
+        /// </summary>
         public static bool operator ==(Matrix<D> mat1, Matrix<D> mat2) => mat1.Equals(mat2);
+        /// <summary>
+        /// Returns thue if mat1 and mat2 are not equal
+        /// </summary>
         public static bool operator !=(Matrix<D> mat1, Matrix<D> mat2) => mat1.Equals(mat2);
         #endregion
 
         #region Converters
+        /// <summary>Implicit conversion from <see cref="Matrix{D}"/> to <typeparamref name="D"/>[][]</summary>
         public static implicit operator D[][](Matrix<D> mat) => mat.data.ToArray();
+        /// <summary>Implicit conversion from <typeparamref name="D"/>[][] to <see cref="Matrix{D}"/></summary>
         public static implicit operator Matrix<D>(D[][] values) => new(values);
+        /// <summary>Implicit conversion from <see cref="Matrix{D}"/> to <see cref="FastList{T}"/> of <typeparamref name="D"/>[]</summary>
         public static implicit operator FastList<D[]>(Matrix<D> mat) => mat.data;
+        /// <summary>Implicit conversion from <see cref="FastList{D}"/>[] to <see cref="Matrix{D}"/></summary>
         public static implicit operator Matrix<D>(FastList<D[]> list) => new(list.ToArray());
+        /// <summary>Implicit conversion from <see cref="Matrix{D}"/> to <see cref="FastList{T}"/> of <see cref="ArrVector{D}"/></summary>
         public static implicit operator FastList<ArrVector<D>>(Matrix<D> mat) => mat.GetRows();
+        /// <summary>Implicit conversion from <see cref="FastList{T}"/> of <see cref="ArrVector{D}"/> to <see cref="Matrix{D}"/></summary>
         public static implicit operator Matrix<D>(FastList<ArrVector<D>> list) => new(list.ToArray());
         #endregion
     }

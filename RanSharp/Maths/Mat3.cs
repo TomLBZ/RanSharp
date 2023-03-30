@@ -85,11 +85,20 @@ namespace RanSharp.Maths
             else { R1 = new(arr[0][0], arr[0][1], arr[0][2]); R2 = new(arr[1][0], arr[1][1], arr[1][2]); R3 = new(arr[2][0], arr[2][1], arr[2][2]); }
         }
         /// <summary>
-        /// Creates a new matrix with the specified <see cref="IEnumerable{D[]}"/>.
+        /// Creates a new matrix with the specified <see cref="IEnumerable{T}"/> of <typeparamref name="D"/>[].
         /// </summary>
         public Mat3(IEnumerable<D[]> arr) : this(arr.ToArray()) { }
+        /// <summary>
+        /// Creates a new matrix with the specified <see cref="IList{T}"/> of <typeparamref name="D"/>[].
+        /// </summary>
         public Mat3(IList<D[]> arr) : this(arr.ToArray()) { }
+        /// <summary>
+        /// Creates a new matrix with the specified <see cref="List{T}"/> of <typeparamref name="D"/>[].
+        /// </summary>
         public Mat3(List<D[]> arr) : this(arr.ToArray()) { }
+        /// <summary>
+        /// Creates a new matrix with the specified <see cref="FastList{T}"/> of <typeparamref name="D"/>[].
+        /// </summary>
         public Mat3(FastList<D[]> arr) : this(arr.ItemsUnsafe) { }
         // Constructors based on a list of DataType that contains a row of values
         /// <summary>
@@ -103,14 +112,23 @@ namespace RanSharp.Maths
             else { R1 = arr[0]; R2 = arr[1]; R3 = arr[2]; }
         }
         /// <summary>
-        /// Creates a new matrix with the specified <see cref="IEnumerable{Vec3{D}}"/>.
+        /// Creates a new matrix with the specified <see cref="IEnumerable{T}"/> of <see cref="Vec3{D}"/>.
         /// </summary>
         public Mat3(IEnumerable<Vec3<D>> arr) : this(arr.ToArray()) { }
+        /// <summary>
+        /// Creates a new matrix with the specified <see cref="IList{T}"/> of <see cref="Vec3{D}"/>.
+        /// </summary>
         public Mat3(IList<Vec3<D>> arr) : this(arr.ToArray()) { }
+        /// <summary>
+        /// Creates a new matrix with the specified <see cref="List{T}"/> of <see cref="Vec3{D}"/>.
+        /// </summary>
         public Mat3(List<Vec3<D>> arr) : this(arr.ToArray()) { }
+        /// <summary>
+        /// Creates a new matrix with the specified <see cref="FastList{T}"/> of <see cref="Vec3{D}"/>.
+        /// </summary>
         public Mat3(FastList<Vec3<D>> arr) : this(arr.ItemsUnsafe) { }
         /// <summary>
-        /// Creates a new matrix with the specified params array of <see cref="(D,D,D)){D}"/>.
+        /// Creates a new matrix with the specified params <see cref="Array"/> of unamed <see cref="Tuple{D, D, D}"/>.
         /// </summary>
         public Mat3(params (D, D, D)[] arr)
         {
@@ -120,19 +138,28 @@ namespace RanSharp.Maths
             else { R1 = arr[0]; R2 = arr[1]; R3 = arr[2]; }
         }
         /// <summary>
-        /// Creates a new matrix with the specified <see cref="IEnumerable{(D,D,D)}"/>.
+        /// Creates a new matrix with the specified <see cref="IEnumerable{T}"/> of unamed <see cref="Tuple{D, D, D}"/>.
         /// </summary>
         public Mat3(IEnumerable<(D, D, D)> arr) : this(arr.ToArray()) { }
+        /// <summary>
+        /// Creates a new matrix with the specified <see cref="IList{T}"/> of unamed <see cref="Tuple{D, D, D}"/>.
+        /// </summary>
         public Mat3(IList<(D, D, D)> arr) : this(arr.ToArray()) { }
+        /// <summary>
+        /// Creates a new matrix with the specified <see cref="List{T}"/> of unamed <see cref="Tuple{D, D, D}"/>.
+        /// </summary>
         public Mat3(List<(D, D, D)> arr) : this(arr.ToArray()) { }
+        /// <summary>
+        /// Creates a new matrix with the specified <see cref="FastList{T}"/> of unamed <see cref="Tuple{D, D, D}"/>.
+        /// </summary>
         public Mat3(FastList<(D, D, D)> arr) : this(arr.ItemsUnsafe) { }
         // Constructor based on a Datatype that contains the whole matrix data
         /// <summary>
-        /// Creates a new matrix with the specified <see cref="(D, D, D, D, D, D, D, D, D)"/>.
+        /// Creates a new matrix with the specified unamed <see cref="Tuple"/> that contains 9 elements of <typeparamref name="D"/>.
         /// </summary>
         public Mat3((D, D, D, D, D, D, D, D, D) tuple) { R1 = new(tuple.Item1, tuple.Item2, tuple.Item3); R2 = new(tuple.Item4, tuple.Item5, tuple.Item6); R3 = new(tuple.Item7, tuple.Item8, tuple.Item9); }
         /// <summary>
-        /// Creates a new matrix with the specified 2d array of <see cref="D"/>.
+        /// Creates a new matrix with the specified 2d array of <typeparamref name="D"/>.
         /// </summary>
         public Mat3(D[,] arr)
         {
@@ -267,7 +294,11 @@ namespace RanSharp.Maths
         /// <summary>
         /// Returns true if the matrix is equal to the other matrix at the precision of the Epsilon value, which is 1e-9 by default.
         /// </summary>
-        public bool Near(Mat3<D> mat) => R1.Near(mat.R1, Epsilon) && R2.Near(mat.R2, Epsilon) && R3.Near(mat.R3, Epsilon);
+        public bool Near(Mat3<D> mat, double epsilon = 1e-9)
+        {
+            double e = epsilon == Epsilon ? Epsilon : epsilon;
+            return R1.Near(mat.R1, e) && R2.Near(mat.R2, e) && R3.Near(mat.R3, e);
+        }
         #endregion
 
         #region Public Static Methods
