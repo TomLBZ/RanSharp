@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="44e83ee2-b530-4724-94b5-0add256ff67e" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>Version 1.0.1.0 was released on 31 March 2023.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+
+        <list class="bullet">
+          <listItem>
+            <para>Modified the Line of T struct to accept two distinct constructors to reduce confusion.</para>
+          </listItem>
+
+        </list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="6cad9ee3-dd52-427c-abec-0fe97c53cfef" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

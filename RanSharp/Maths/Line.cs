@@ -15,16 +15,24 @@
         public readonly T B;
         private readonly Dictionary<int, int> _attributes;
         /// <summary>
-        /// Creates a new line between 2 points. It is also possible to add attributes to the line.
-        /// If attributes are needed, the attribute (<see cref="int"/>) and its value (<see cref="int"/>) should be specified together.
-        /// It is advised to implement an enum (specifying their <see cref="int"/> values as well) for the attributes.
+        /// Creates a new line between 2 points. It has no attributes attached. Thus, accessing the indexer will throw an exception.
         /// </summary>
-        public Line(T a, T b, int? attr = null, int? value = null)
+        public Line(T a, T b)
         {
             A = a;
             B = b;
             _attributes = new();
-            if (attr is int @iattr && value is int @ivalue) _attributes[iattr] = ivalue;
+        }
+        /// <summary>
+        /// Creates a new line between 2 points. It is also possible to add attributes to the line.
+        /// It is advised to implement an enum (specifying their <see cref="int"/> values as well) for the attributes.
+        /// </summary>
+        public Line(T a, T b, int attr, int value)
+        {
+            A = a;
+            B = b;
+            _attributes = new();
+            _attributes[attr] = value;
         }
         /// <summary>
         /// Gets or sets the value of the specified attribute (<see cref="int"/>).
