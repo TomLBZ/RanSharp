@@ -41,7 +41,7 @@ var e = c * c; // Dot product. (Cross product is c % c, angle between vectors is
 int size = 1e6;
 Random r = new();
 double[] data = new double[size];
-Loop.Do(size, i => r.NextDouble()); // fill data with random values
+data.MapInPlace(i => r.NextDouble()); // fill data with random values
 data.CombineInPlace(5d, (a,b) => a + b); // Mutate data by adding 5 to each element
 // Wait... since when did double[] have this strange method called CombineInPlace?
 // Well... it is placed in RanSharp.Performance.Loop<T> class.
