@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html ><html lang="en-US"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" href="../css/bulma.css" /><link rel="stylesheet" href="../css/font-awesome.min.css" /><link rel="stylesheet" href="../css/presentationStyle.css" /><link rel="stylesheet" href="../css/vs.min.css" /><script src="../scripts/jquery-3.5.1.min.js"></script><script src="../scripts/clipboard.min.js"></script><script src="../scripts/highlight.min.js"></script><script src="../scripts/presentationStyle.js"></script><title>RanSharp.Maths Namespace</title><meta name="Title" content="RanSharp.Maths" /><meta name="Help.Id" content="N:RanSharp.Maths" /><meta name="Help.ContentType" content="Reference" /><meta name="container" content="RanSharp.Maths" /><meta name="guid" content="f6fa4f31-9201-0fec-0b6b-bfa7b3029260" /><meta name="Description" content="The Maths namespace provides structs for Maths calculations with overloaded operators. ArrVector represents a vector of arbitrary length. Vec3 represents a 3-D vector. Matrix represents a matrix of arbitrary size. Mat3 represents a 3-D matrix." /><meta name="tocFile" content="../toc/IDC.xml" /></head><body><div class="fixedLayout"><div id="Header" class="fixedHeader"><div class="pageHeader level mb-0 py-2 px-4"><div id="TitleContainer" class="level-left"><div class="level-item"><img src="../icons/RanSharp.ico" /></div><div id="DocumentationTitle" class="level-item">RanSharp Help Doc</div></div><div id="LangFilterSearchContainer" class="level-right"><div class="level-item"><div class="dropdown is-hoverable"><div class="dropdown-trigger"><button class="button" aria-haspopup="true" aria-controls="dropdown-menu"><span id="CurrentLanguage"></span><span class="icon is-small"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button></div><div class="dropdown-menu" role="menu"><div id="LanguageSelections" class="dropdown-content"><a class="dropdown-item languageFilterItem" data-languageId="cs">C#</a></div></div></div></div><div class="level-item"><form id="SearchForm" action="#" onsubmit="TransferToSearchPage(); return false;"><div class="field"><div class="control has-icons-left"><input id="SearchTerms" class="input" type="text" maxlength="200" placeholder="Search" /><span class="icon is-small is-left"><i class="fa fa-search"></i></span><button id="SearchButton" type="submit" class="is-hidden"></button></div></div></form></div></div></div></div><div class="fixedContent"><nav class="breadcrumb my-1 px-2 border-bottom" role="navigation"><ul id="TopicBreadcrumbs" /></nav><div class="columns pl-5 pr-5 fixedContent"><div id="ShowHideTOCColumn" class="column is-hidden-tablet"><a id="ShowHideTOC">Show/Hide TOC</a></div><div id="TOCColumn" class="column is-hidden-mobile"><nav class="toc"><ul id="TableOfContents" class="toc-menu" /></nav></div><div id="TopicContent" class="column content is-7"><h1>Ran<wbr />Sharp.<wbr />Maths Namespace</h1><div class="summary">The Maths namespace provides structs for Maths calculations with overloaded operators.
+ArrVector represents a vector of arbitrary length.
+Vec3 represents a 3-D vector.
+Matrix represents a matrix of arbitrary size.
+Mat3 represents a 3-D matrix.
+Line represents a line with two end points.
+Axis is an enumeration representing an axis, such as X, Y or Z.
+IndexVar represents an indexed (subscripted) variable.</div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>Structures</h2><div id="IDACASection"><table id="structureList" class="table is-hoverable"><tr><td><a href="1d96a8f1-ca7b-628d-4c6f-afde5194b077.htm">ArrVector<span id="LST67F79AE7_0" data-languageSpecificText="cs=&lt;|vb=(Of |cpp=&lt;|nu=(|fs=&lt;'"></span>T<span id="LST67F79AE7_1" data-languageSpecificText="cs=&gt;|vb=)|cpp=&gt;|nu=)|fs=&gt;"></span></a></td><td>
+            Array vector struct with special reloaded operators and optimized loop speeds.
+            <br />Absolute value (Abs(a)) =========== +a
+            <br />Normalized value (a.Normalized()): === ~a
+            <br />Dot product (a·b) =============== a * b
+            <br />Angle between ((a·b)/(|a|*|b|)) ======== a / b
+            <br />Cross product (a X b) ============ a % b
+            <br />Optimized Loop: ForEach, Accumulate, MapBy, CombineWith, CompositeWith
+            </td></tr><tr><td><a href="eba37c2a-9f8b-3e7c-c7a0-c3dfc51a993f.htm">IndexVar<span id="LST67F79AE7_2" data-languageSpecificText="cs=&lt;|vb=(Of |cpp=&lt;|nu=(|fs=&lt;'"></span>T<span id="LST67F79AE7_3" data-languageSpecificText="cs=&gt;|vb=)|cpp=&gt;|nu=)|fs=&gt;"></span></a></td><td>
+            A variable with indices. Can be used in symbolic calculations, or as a dictionary key.<br />
+            For example:
+            <div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-cs">IndexVar&lt; int&gt; x = new(2); // Represents an indexed variable based on 2 <see cref="T:System.Int32" /> values.<br />
+List&lt;int[]&gt; symbolicPoints = new() { x[0, 0], x[0, 1]}; // Represents a list of 2D points: x_00 and x_01<br />
+Func&lt;int[], PointF&gt; valueMap = (indices) =&gt; {/*body*/}; // Represents a function that maps an indexed variable to its value.<br />
+List&lt;PointF&gt; points = points.Select(valueMap).ToList(); // Evaluates the actual values of the points.<br /></code></pre></div></div>
+            When the value map is a simple function, the <a href="eba37c2a-9f8b-3e7c-c7a0-c3dfc51a993f.htm">IndexVar<span id="LST67F79AE7_4" data-languageSpecificText="cs=&lt;|vb=(Of |cpp=&lt;|nu=(|fs=&lt;'"></span>T<span id="LST67F79AE7_5" data-languageSpecificText="cs=&gt;|vb=)|cpp=&gt;|nu=)|fs=&gt;"></span></a> can be used as a dictionary key:
+            <div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-cs">Dictionary&lt;IndexVar&lt;int&gt;, PointF&gt; points = new() { { x[1, 2], new PointF(1, 2) }, { x[3, 4], new PointF(3, 4) }, { x[5, 6], new PointF(5, 6) } }; // Represents a list of 2D points.<br /></code></pre></div></div>
+            When the value map is very complicated and performance is critical, the <a href="eba37c2a-9f8b-3e7c-c7a0-c3dfc51a993f.htm">IndexVar<span id="LST67F79AE7_6" data-languageSpecificText="cs=&lt;|vb=(Of |cpp=&lt;|nu=(|fs=&lt;'"></span>T<span id="LST67F79AE7_7" data-languageSpecificText="cs=&gt;|vb=)|cpp=&gt;|nu=)|fs=&gt;"></span></a> should be used instead of variable values, 
+            because it avoids the expensive evaluation as much as possible. The value map only needs to be used once after all symbolic calculations has been done.
+            </td></tr><tr><td><a href="0428076c-6b34-bb6d-4a24-b69e02c112c7.htm">Line<span id="LST67F79AE7_8" data-languageSpecificText="cs=&lt;|vb=(Of |cpp=&lt;|nu=(|fs=&lt;'"></span>T<span id="LST67F79AE7_9" data-languageSpecificText="cs=&gt;|vb=)|cpp=&gt;|nu=)|fs=&gt;"></span></a></td><td>
+            A struct that represents a line between 2 points. The points can be of any type.
+            </td></tr><tr><td><a href="1c7b138c-953d-0471-6fb3-583a28d7772b.htm">Mat3<span id="LST67F79AE7_10" data-languageSpecificText="cs=&lt;|vb=(Of |cpp=&lt;|nu=(|fs=&lt;'"></span>D<span id="LST67F79AE7_11" data-languageSpecificText="cs=&gt;|vb=)|cpp=&gt;|nu=)|fs=&gt;"></span></a></td><td>
+            Fixed-sized matrix3 struct with special reloaded operators and optimized loop speeds.
+            <br />Absolute value (Abs(a)) =========== +a
+            <br />Normalized value (a.Normalized()): === ~a
+            <br />Matrix product (a*b) ============= a * b
+            </td></tr><tr><td><a href="7ff22235-a053-3e62-bb87-e66f0358dbbe.htm">Matrix<span id="LST67F79AE7_12" data-languageSpecificText="cs=&lt;|vb=(Of |cpp=&lt;|nu=(|fs=&lt;'"></span>D<span id="LST67F79AE7_13" data-languageSpecificText="cs=&gt;|vb=)|cpp=&gt;|nu=)|fs=&gt;"></span></a></td><td>
+            Represents a matrix of any dimension.
+            <br />Special Usages:<br />
+            Generic Matrix Multiplication: <div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-cs">m1 * m2</code></pre></div></div>
+            Note that the order of the operands matters and the dimensions of the vector and the matrix must allow multiplication.
+            </td></tr><tr><td><a href="9fe6ea21-8d39-4479-4e43-650335a2fde3.htm">Vec3<span id="LST67F79AE7_14" data-languageSpecificText="cs=&lt;|vb=(Of |cpp=&lt;|nu=(|fs=&lt;'"></span>T<span id="LST67F79AE7_15" data-languageSpecificText="cs=&gt;|vb=)|cpp=&gt;|nu=)|fs=&gt;"></span></a></td><td>
+            Fixed-size vector3 struct with special reloaded operators and optimized loop speeds.
+            <br />Absolute value (Abs(a)) =========== +a
+            <br />Normalized value (a.Normalized()): === ~a
+            <br />Dot product (a·b) =============== a * b
+            <br />Angle between ((a·b)/(|a|*|b|)) ======== a / b
+            <br />Cross product (a X b) ============ a % b
+            </td></tr></table></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>Interfaces</h2><div id="IDDCASection"><table id="interfaceList" class="table is-hoverable"><tr><td><a href="70e14a92-3d65-167f-f9b9-4cecf2530c45.htm">IVect<span id="LST67F79AE7_16" data-languageSpecificText="cs=&lt;|vb=(Of |cpp=&lt;|nu=(|fs=&lt;'"></span>T<span id="LST67F79AE7_17" data-languageSpecificText="cs=&gt;|vb=)|cpp=&gt;|nu=)|fs=&gt;"></span></a></td><td>
+            An interface that specifies some basic functions a vector should have.
+            This interface does not require arithmetic operators to be implemented.
+            </td></tr></table></div><h2 class="quickLinkHeader"><span class="icon toggleSection" tabindex="0"><i class="fa fa-angle-down"></i></span>Enumerations</h2><div id="IDBCASection"><table id="enumerationList" class="table is-hoverable"><tr><td><a href="fff4f0c5-2922-d1f5-c1d1-6e2ed2320d8c.htm">Axis</a></td><td>
+            Axis enumeration.
+            </td></tr></table></div></div><div id="InThisArticleColumn" class="column is-hidden-mobile"><nav class="menu sticky is-hidden"><p class="menu-label"><strong>In This Article</strong></p><ul id="InThisArticleMenu" class="menu-list"><li><a class="quickLink">Structures</a></li><li><a class="quickLink">Interfaces</a></li><li><a class="quickLink">Enumerations</a></li></ul></nav></div></div></div><footer id="PageFooter" class="footer border-top py-3 fixedFooter"><div class="columns"><div class="column"> 
+				</div><div class="column"> 
+				</div></div></footer></div><script>$(function(){
+SetDefaultLanguage("cs");
+LoadTocFile(null, null);
+InitializeQuickLinks();
+
+$(".toggleSection" ).click(function () {
+    SectionExpandCollapse(this);
+});
+
+$(".toggleSection").keypress(function () {
+    SectionExpandCollapseCheckKey(this, event)
+});
+hljs.highlightAll();
+});</script></body></html>

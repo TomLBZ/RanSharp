@@ -5,7 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <ApplicationIcon>RanSharp.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="RanSharp.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Control\" />
