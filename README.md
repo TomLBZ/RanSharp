@@ -1,4 +1,4 @@
-![RanSharp](img/RanSharp.png)
+![RanSharp](https://raw.githubusercontent.com/TomLBZ/Images/master/img/RanSharp.png)
 
 # RanSharp
 
@@ -60,9 +60,9 @@ A Looping comparison when the computation is normal (many instructions per loop)
 <br>This library has bigger overhead creating each for loop compared to original C# code,
 but the loop speed itself is superior to the original C# code. Therefore, it is best used when
 the computation inside the for loop is normal or heavy.
-![LoopingComparison](img/LoopSpeedComparison.png)
+![LoopSpeedComparison](https://raw.githubusercontent.com/TomLBZ/Images/master/img/LoopSpeedComparison.png)
 
 A Looping comparison when the computation is light (only a few instructions per loop):
 <br>Since computation is light, ArrVector become slightly slower than an array. However, 
 FastList is still faster than the original C# List.
-![DataTypeSpeed](img/DataTypeSpeedComparison.png)
+![DataTypeSpeed](https://raw.githubusercontent.com/TomLBZ/Images/master/img/DataTypeSpeedComparison.png)
