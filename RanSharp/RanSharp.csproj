@@ -19,7 +19,7 @@
     <PackageReleaseNotes>Changed the API of Line&lt;T&gt; to have 2 distinct constructors.</PackageReleaseNotes>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

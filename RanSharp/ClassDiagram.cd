@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RanSharp.Performance.ArrayExtensions" Collapsed="true">
+    <Position X="7.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEABAhBAAAAAABAAgAIAAAAAAAAAAABBAAAIAAA=</HashCode>
+      <FileName>Performance\ArrayExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RanSharp.Performance.Calc&lt;T&gt;" Collapsed="true">
+    <Position X="9.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAQAAAAAAAAAAAAAAIAAAAAAAAABAAAA=</HashCode>
+      <FileName>Performance\Calc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RanSharp.Performance.FastList&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGIACEgxBxBAIBAQCBAUlAYCABgKAAAEKAFDAIJcIAA=</HashCode>
+      <FileName>Performance\FastList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RanSharp.Performance.ListExtensions" Collapsed="true">
+    <Position X="7.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEABAhBAAAAAABAAgAIAAAAAAAAAAABBAAAIAAA=</HashCode>
+      <FileName>Performance\ListExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RanSharp.Performance.Loop" Collapsed="true">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Performance\Loop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RanSharp.Performance.Loop&lt;T&gt;" Collapsed="true">
+    <Position X="11.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEABAhBAAAAAABAAgEIAAAAAAAAAAABBAAAIAAA=</HashCode>
+      <FileName>Performance\Loop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RanSharp.Performance.NumericLoop&lt;T&gt;" Collapsed="true">
+    <Position X="7.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEABAhBAAAAAABAAgAIAAAAAAAAAAABBAAAIAAA=</HashCode>
+      <FileName>Performance\Loop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="RanSharp.Maths.ArrVector&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAEBBAhBAEAEE+BeJogJAAWJQAKIGAABBAQAIYqU=</HashCode>
+      <FileName>Maths\ArrVector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="RanSharp.Maths.IndexVar&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAABAACAAABAQAAAAAAAAAAAAgAAAAAKA=</HashCode>
+      <FileName>Maths\IndexVar.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="RanSharp.Maths.Line&lt;T&gt;" Collapsed="true">
+    <Position X="11.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACCAAAAAAAAAAAAAAAAAAAIAEAAAA=</HashCode>
+      <FileName>Maths\Line.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="RanSharp.Maths.Mat3&lt;D&gt;" Collapsed="true">
+    <Position X="7.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIAICEAAAAAIECU6QXAIgAAAQAwYoICAIIAAKgEAiA=</HashCode>
+      <FileName>Maths\Mat3.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="RanSharp.Maths.Matrix&lt;D&gt;" Collapsed="true">
+    <Position X="9.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gFIABEEBAhBAIACE+BUIoBYAQQAQLKICAIBRBCAMAqQ=</HashCode>
+      <FileName>Maths\Matrix.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="RanSharp.Maths.Vec3&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAFAAhBAEAEE+AWBIgBIASIQAIIGAAAAAAAAYqU=</HashCode>
+      <FileName>Maths\Vec3.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="RanSharp.Maths.IVect&lt;T&gt;" Collapsed="true">
+    <Position X="7.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAABAAAAAAGAAAAABAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Maths\IVect.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="RanSharp.Maths.Axis" Collapsed="true">
+    <Position X="7.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIYAE=</HashCode>
+      <FileName>Maths\Axis.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

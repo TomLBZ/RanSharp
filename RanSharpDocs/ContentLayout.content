@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="72b4ce39-61c1-418a-9549-3c0c0d4666cb" visible="True" isDefault="true" isSelected="true" title="Welcome to the RanSharp Documentation">
+  <Topic id="72b4ce39-61c1-418a-9549-3c0c0d4666cb" visible="True" isDefault="true" title="Welcome to the RanSharp Documentation">
     <HelpKeywords>
       <HelpKeyword index="K" term="Welcome" />
     </HelpKeywords>
@@ -17,6 +17,11 @@
     <Topic id="44e83ee2-b530-4724-94b5-0add256ff67e" visible="True" title="Version 1.0.1.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="version, 1.0.1.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="57a041a8-4e3c-4d26-847d-14582ea09acf" visible="True" isSelected="true" title="Version 1.0.2.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="version, 1.0.2.0" />
       </HelpKeywords>
     </Topic>
   </Topic>

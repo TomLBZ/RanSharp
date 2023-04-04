@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="57a041a8-4e3c-4d26-847d-14582ea09acf" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>Version 1.0.2.0 was released on 4 April 2023.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+
+        <list class="bullet">
+          <listItem>
+            <para>Added the IndexArray of T struct and modifies the IndexVar of T class to use IndexArray instead of Arrays.</para>
+          </listItem>
+
+        </list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="6cad9ee3-dd52-427c-abec-0fe97c53cfef" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>
