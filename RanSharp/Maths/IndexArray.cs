@@ -46,12 +46,17 @@ namespace RanSharp.Maths
             return result;
         }
         /// <summary>
-        /// Gets the hashcode of the inner data array.
+        /// Gets the hashcode of the inner data array using the values of each element.
+        /// For two instances of this struct where the elements are the same, this hashcode will also be the same.
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return data.GetHashCode();
+            T hashcode = T.CreateSaturating(data.Length);
+            T shiftval = T.CreateSaturating(17);
+            foreach (T value in data)
+                hashcode = unchecked(value * shiftval + value);
+            return hashcode.GetHashCode();
         }
         /// <summary>
         /// Compars the equality of both operands using the overloaded Equals operator.

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="976411ef-84e0-4fd6-8c7c-46f2fd0fc8c7" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>Version 1.0.3.0 was released on 4 April 2023.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+
+        <list class="bullet">
+          <listItem>
+            <para>Modified GetHashcode() function for the IndexArray of T struct.</para>
+          </listItem>
+
+        </list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="6cad9ee3-dd52-427c-abec-0fe97c53cfef" />
+    </relatedTopics>
+    
+  </developerConceptualDocument>
+</topic>
